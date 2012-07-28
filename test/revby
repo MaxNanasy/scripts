@@ -1,10 +1,6 @@
 #!/bin/sh
-# TODO Make this file easier to read
 testRevby () {
   assertEquals 'Fix bug 69 ;)
-- Reviewed by someone' "$(revby someone <<EOF
-Fix bug 69 ;)
-EOF
-)"
+- Reviewed by someone' "$(revby someone <<< 'Fix bug 69 ;)')"
 }
 . shunit2/src/shunit2
