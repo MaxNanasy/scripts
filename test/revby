@@ -1,6 +1,8 @@
 #!/bin/sh
-testRevby () {
+
+testRevby() {
   assertEquals 'Fix bug 69 ;)
 - Reviewed by someone' "$(revby someone <<< 'Fix bug 69 ;)')"
 }
+
 . shunit2/src/shunit2
