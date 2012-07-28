@@ -5,4 +5,14 @@ testRevby() {
 - Reviewed by someone' "$(revby someone <<< 'Fix bug 69 ;)')"
 }
 
+testHyphenStartsLastInputLine() {
+  assertEquals 'Fix 2 bugs:
+- 69 ;)
+- 420 ;)
+
+- Reviewed by someone' "$(revby someone <<< 'Fix 2 bugs:
+- 69 ;)
+- 420 ;)')"
+}
+
 . shunit2/src/shunit2
