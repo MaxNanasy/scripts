@@ -1,0 +1,10 @@
+#!/bin/sh
+# TODO Make this file easier to read
+testRevby () {
+  assertEquals 'Fix bug 69 ;)
+- Reviewed by someone' "$(revby someone <<EOF
+Fix bug 69 ;)
+EOF
+)"
+}
+. shunit2/src/shunit2
