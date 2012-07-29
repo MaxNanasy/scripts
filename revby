@@ -1,3 +1,4 @@
-#!/bin/sh
-cat
+#!/bin/bash
+# FIXME This works only sometimes because it uses concurrent processes
+tee >(if tail -1 | grep -q '^-'; then echo; fi)
 echo "- Reviewed by $1"
