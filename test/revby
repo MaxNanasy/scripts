@@ -2,6 +2,7 @@
 
 testRevby() {
   assertEquals 'Fix bug 69 ;)
+
 - Reviewed by someone' "$(revby someone <<< 'Fix bug 69 ;)')"
 }
 
