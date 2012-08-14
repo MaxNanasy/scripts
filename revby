@@ -1,4 +1,6 @@
 #!/bin/sh
 cat
 echo
-echo "Reviewed-by: $1"
+for reviewer in "$@"
+do echo "Reviewed-by: $reviewer"
+done

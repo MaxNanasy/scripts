@@ -6,4 +6,11 @@ testRevby() {
 Reviewed-by: someone' "$(revby someone <<< 'Fix bug 69 ;)')"
 }
 
+testRevbyTwoReviewers() {
+  assertEquals 'Fix bug 69 ;)
+
+Reviewed-by: someone
+Reviewed-by: someone else' "$(revby someone 'someone else' <<< 'Fix bug 69 ;)')"
+}
+
 . shunit2/src/shunit2
