@@ -1,2 +1,2 @@
 #!/bin/bash
-diff -u <(hlcat "$1") <(hlcat "$2") | hless -sdiff
+diff -u <(hlcat "$1") <(hlcat "$2") | hlcat -sdiff
