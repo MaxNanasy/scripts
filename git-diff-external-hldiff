@@ -1,0 +1,4 @@
+#!/bin/sh
+printf '%s\n' "$1"
+printf 'Mode: %s => %s\n' "$4" "$7" # TODO Print only one mode when no change
+hldiff "$2" "$5"
