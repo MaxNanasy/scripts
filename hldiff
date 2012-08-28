@@ -5,5 +5,5 @@ red_background="$(tput setab 1)"
 green_background="$(tput setab 2)"
 
 diff -u <(hlcat "$1") <(hlcat "$2") |
-	sed 's/^\(+.*\)$/'"$green_background"'\1'"$normal_background"/ |
-	sed 's/^\(-.*\)$/'"$red_background"'\1'"$normal_background"/
+	gawk -v normal_background="$normal_background" -v red_background="$red_background" -v green_background="$green_background" 'BEGIN { RS="" }
+		{ print gensub(/^(+[^\n]*\n)/, green_background "\\1" normal_background, "g", gensub(/^(-[^\n]*\n)/, red_background "\\1" normal_background, "g")); }'
