@@ -1,0 +1,10 @@
+#!/bin/sh
+
+testTwoTraps() {
+  assertEquals 'b' "$(
+    trap 'echo a' EXIT
+    trap 'echo b' EXIT
+  )"
+}
+
+. shunit2/src/shunit2
