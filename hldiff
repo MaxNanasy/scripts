@@ -1,2 +1,2 @@
 #!/bin/bash
-diff -u <(hlcat "$1") <(hlcat "$2") | hlcat -sdiff
+diff -u <(hlcat "$1") <(hlcat "$2") | sed "s/^\\(+.*\\)$/\x1b[7m\\1\x1b[0m/"
