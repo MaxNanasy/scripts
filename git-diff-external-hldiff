@@ -1,4 +1,11 @@
 #!/bin/sh
+
 printf '%s\n' "$1"
-printf 'Mode: %s => %s\n' "$4" "$7" # TODO Print only one mode when no change
+
+if [ "$4" = . ]
+then printf 'Mode: %s\n' "$7"
+elif [ "$4" != "$7" ] && [ "$7" != . ]
+then printf 'Mode: %s => %s\n' "$4" "$7"
+fi
+
 hldiff "$2" "$5"
