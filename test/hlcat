@@ -1,0 +1,16 @@
+#!/bin/bash
+
+testHlcatNoArguments() {
+  assertEquals 'Hello World!' "$(hlcat <<< 'Hello World!')"
+}
+
+
+testHlcatFilename() {
+  assertEquals 'Hello World!' "$(hlcat <(echo 'Hello World!'))"
+}
+
+testHlcatOption() {
+  assertEquals 'Hello World!' "$(hlcat -sxml <<< 'Hello World!')"
+}
+
+. shunit2/src/shunit2
