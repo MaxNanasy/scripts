@@ -1,6 +1,6 @@
 #!/bin/sh
 
-printf '%s\n' "$1"
+printf 'File: %s\n' "$1"
 
 if [ "$4" = . ]
 then printf 'Mode: %s\n' "$7"
