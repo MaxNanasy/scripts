@@ -1,2 +1,9 @@
 #!/bin/bash
-diff -u <(hlcat "$1") <(hlcat "$2") | sed "s/^\\(+.*\\)$/\x1b[7m\\1\x1b[0m/"
+
+normal_background="$(tput sgr0)"
+red_background="$(tput setab 1)"
+green_background="$(tput setab 2)"
+
+diff -u <(hlcat "$1") <(hlcat "$2") |
+	sed 's/^\(+.*\)$/'"$green_background"'\1'"$normal_background"/ |
+	sed 's/^\(-.*\)$/'"$red_background"'\1'"$normal_background"/
