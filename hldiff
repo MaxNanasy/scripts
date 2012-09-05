@@ -1,2 +1,2 @@
-#!/bin/bash
+#!/usr/bin/env perl
 diff -u --label "$1" <(hlcat "$1") --label "$2" <(hlcat "$2") | hlcat -sdiff
