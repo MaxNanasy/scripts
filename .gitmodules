@@ -1,3 +1,6 @@
 [submodule "shunit2"]
 	path = shunit2
 	url = git@github.com:zanshine/shunit2
+[submodule "rtomayko-dotfiles"]
+	path = rtomayko-dotfiles
+	url = git@github.com:rtomayko/dotfiles
