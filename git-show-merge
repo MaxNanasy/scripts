@@ -4,7 +4,7 @@ current_commit="$(git rev-parse HEAD)"
 commit="$(git rev-parse "$1")"
 
 git stash -u
-trap EXIT 'git checkout .ish && git checkout "$current_commit" && git stash pop'
+trap EXIT 'git reset --hard "$current_commit" && git stash pop'
 git checkout "$commit^"
 git merge $(non-first-merge-parents "$commit")
 git commit -a --allow-empty{,-message}
