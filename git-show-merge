@@ -14,4 +14,4 @@ trap EXIT 'git reset --hard "$current_commit" && git stash pop'
 git checkout "$merge_commit^"
 git merge $(non-first-merge-parents "$merge_commit")
 git commit -a --allow-empty{,-message}
-git show "$(git commit-tree "$merge_commit" -p HEAD -C "$merge_commit")"
+git show "$(git commit-tree "$merge_commit^{tree}" -p HEAD -C "$merge_commit")"
