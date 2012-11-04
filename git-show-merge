@@ -7,11 +7,11 @@
 ### Counterexample: .gitattributes can be tracked, but invokes untracked behavior
 
 current_commit="$(git rev-parse HEAD)"
-commit="$(git rev-parse "$1")"
+merge_commit="$(git rev-parse "$1")"
 
 git stash -u
 trap EXIT 'git reset --hard "$current_commit" && git stash pop'
-git checkout "$commit^"
-git merge $(non-first-merge-parents "$commit")
+git checkout "$merge_commit^"
+git merge $(non-first-merge-parents "$merge_commit")
 git commit -a --allow-empty{,-message}
-git show "$(git commit-tree "$commit" -p HEAD -C "$commit")"
+git show "$(git commit-tree "$merge_commit" -p HEAD -C "$merge_commit")"
