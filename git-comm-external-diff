@@ -1,0 +1,3 @@
+#!/bin/sh
+comm "$1" "$5"
+true
