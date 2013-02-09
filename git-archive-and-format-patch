@@ -1,0 +1,26 @@
+#!/bin/bash
+
+start_commit="$1"
+if [ "$#" -ge 2 ]; then
+	end_commit="$2"
+else
+	end_commit=HEAD
+fi
+
+merge_base="$(git merge-base "$start_commit" "$end_commit")"
+
+[ -d archive-and-format-patch ] && rm -r archive-and-format-patch
+mkdir archive-and-format-patch
+
+# XXX git diff --diff-filter=D should only need to be called once
+git diff --quiet --diff-filter=D "$merge_base" "$end_commit" ||
+	git diff --diff-filter=D --name-only "$merge_base" "$end_commit" > archive-and-format-patch/deleted-files
+
+# XXX git diff --diff-filter=AM should only need to be called once
+git diff --quiet --diff-filter=AM "$merge_base" "$end_commit" ||
+	git diff -z --diff-filter=AM --name-only "$merge_base" "$end_commit" |
+		xargs -0 git archive -o archive-and-format-patch/modified-and-new-files.zip "$end_commit" --
+
+git format-patch --quiet -o archive-and-format-patch/patches "$start_commit..$end_commit"
+zip -qj archive-and-format-patch/patches{.zip,/*.patch}
+rm -r archive-and-format-patch/patches
