@@ -22,5 +22,9 @@ git diff --quiet --diff-filter=AM "$merge_base" "$end_commit" ||
 		xargs -0 git archive -o archive-and-format-patch/modified-and-new-files.zip "$end_commit" --
 
 git format-patch --quiet -o archive-and-format-patch/patches "$start_commit..$end_commit"
-zip -qj archive-and-format-patch/patches{.zip,/*.patch}
+if [ "$(ls archive-and-format-patch/patches | wc -l)" -gt 1 ]; then
+	zip -qj archive-and-format-patch/patches{.zip,/*.patch}
+else
+	cp archive-and-format-patch/{patches/*.patch,}
+fi
 rm -r archive-and-format-patch/patches
