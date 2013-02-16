@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$#" -ne 3 ]; then
+	echo "Usage: git import-filesystem-local-branch-into-subdirectory <filesystem-local remote repository> <subdirectory> (<since> | <revision range>)"
+	echo "Example: git import-filesystem-local-branch-into-subdirectory /src/repository subdirectory master..branch"
+	exit
+fi
+
+(cd "$1" && git format-patch --stdout --no-renames --src-prefix="a/$2/" --dst-prefix="b/$2/" "$3") | git am
