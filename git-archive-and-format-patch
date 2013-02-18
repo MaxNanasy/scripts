@@ -24,6 +24,7 @@ git diff --quiet --diff-filter=AM "$merge_base" "$end_commit" ||
 git format-patch --quiet -o archive-and-format-patch/patches "$start_commit..$end_commit"
 if [ "$(ls archive-and-format-patch/patches | wc -l)" -gt 1 ]; then
 	zip -qj archive-and-format-patch/patches{.zip,/*.patch}
+	git diff --no-textconv "$merge_base" "$end_commit" > archive-and-format-patch/aggregate-patch.patch
 else
 	cp archive-and-format-patch/{patches/*.patch,}
 fi
