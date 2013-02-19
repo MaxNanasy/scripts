@@ -4,3 +4,6 @@
 [submodule "rtomayko-dotfiles"]
 	path = rtomayko-dotfiles
 	url = git@github.com:rtomayko/dotfiles
+[submodule "git-scrum"]
+	path = git-scrum
+	url = https://github.com/topicusonderwijs/git-scrum
