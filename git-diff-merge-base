@@ -1,0 +1,36 @@
+#!/bin/bash
+
+diff_options=()
+commits=()
+
+for arg; do
+	case "$arg" in
+		-*)
+			diff_options+=("$arg")
+		;;
+		*)
+			commits+=("$arg")
+		;;
+	esac
+done
+
+case "${#commits[@]}" in
+	0)
+		echo "Not enough arguments" >&2
+		exit 1
+	;;
+	1)
+		source_commit="${commits[0]}"
+		destination_commit=HEAD
+	;;
+	2)
+		source_commit="${commits[0]}"
+		destination_commit="${commits[1]}"
+	;;
+	*)
+		echo "Too many arguments" >&2
+		exit 1
+	;;
+esac
+
+git diff "${diff_options[@]}" "$(git merge-base "$source_commit" "$destination_commit")" "$destination_commit"
