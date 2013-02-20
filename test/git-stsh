@@ -1,1 +1,27 @@
-git stsh
+#!/bin/sh
+
+original_dir="$PWD"
+
+setup() {
+  git_dir=$(mktemp)
+  trap EXIT "cd '$(shell-quote "$original_dir")' && rm -rf '$(shell-quote "$git_dir")'"
+  cd "$(git_dir)" && git init
+}
+
+testStshModifiedFile() {
+  setup
+  echo a > x
+  git add x
+  git commit --allow-empty-message -m ''
+  echo b > x
+  git stsh
+  assertEquals a "$(cat x)"
+}
+
+testStshAndPopModifiedFile() {
+  testStshModifiedFile
+  git stsh pop
+  assertEquals b "$(cat x)"
+}
+
+. shunit2/src/shunit2
