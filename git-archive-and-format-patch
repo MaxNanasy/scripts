@@ -7,25 +7,29 @@ else
 	end_commit=HEAD
 fi
 
+output_directory="$PWD/archive-and-format-patch"
+
+cd "$(git rev-parse --show-toplevel)"
+
 merge_base="$(git merge-base "$start_commit" "$end_commit")"
 
-[ -d archive-and-format-patch ] && rm -r archive-and-format-patch
-mkdir archive-and-format-patch
+[ -d "$output_directory" ] && rm -r "$output_directory"
+mkdir "$output_directory"
 
 # XXX git diff --diff-filter=D should only need to be called once
 git diff --quiet --diff-filter=D "$merge_base" "$end_commit" ||
-	git diff --diff-filter=D --name-only "$merge_base" "$end_commit" > archive-and-format-patch/deleted-files
+	git diff --diff-filter=D --name-only "$merge_base" "$end_commit" > "$output_directory/deleted-files"
 
 # XXX git diff --diff-filter=AM should only need to be called once
 git diff --quiet --diff-filter=AM "$merge_base" "$end_commit" ||
 	git diff -z --diff-filter=AM --name-only "$merge_base" "$end_commit" |
-		xargs -0 git archive -o archive-and-format-patch/modified-and-new-files.zip "$end_commit" --
+		xargs -0 git archive -o "$output_directory/modified-and-new-files.zip" "$end_commit" --
 
-git format-patch --quiet -o archive-and-format-patch/patches "$start_commit..$end_commit"
-if [ "$(ls archive-and-format-patch/patches | wc -l)" -gt 1 ]; then
-	zip -qj archive-and-format-patch/patches{.zip,/*.patch}
-	git diff --no-textconv "$merge_base" "$end_commit" > archive-and-format-patch/aggregate-patch.patch
+git format-patch --quiet -o "$output_directory/patches" "$start_commit..$end_commit"
+if [ "$(ls "$output_directory/patches" | wc -l)" -gt 1 ]; then
+	zip -qj "$output_directory/patches"{.zip,/*.patch}
+	git diff --no-textconv "$merge_base" "$end_commit" > "$output_directory/aggregate-patch.patch"
 else
-	cp archive-and-format-patch/{patches/*.patch,}
+	cp "$output_directory/"{patches/*.patch,}
 fi
-rm -r archive-and-format-patch/patches
+rm -r "$output_directory/patches"
