@@ -1,0 +1,4 @@
+#!/bin/sh
+for argument; do
+	printf '%s\n' "$argument"
+done
