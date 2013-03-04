@@ -6,4 +6,4 @@ if [ "$#" -ne 3 ]; then
 	exit
 fi
 
-(cd "$1" && git format-patch --stdout --no-renames --src-prefix="a/$2/" --dst-prefix="b/$2/" "$3") | git am
+(cd "$1" && git format-patch --stdout -k --no-renames --src-prefix="a/$2/" --dst-prefix="b/$2/" "$3") | git am -k
