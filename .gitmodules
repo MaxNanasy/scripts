@@ -7,3 +7,6 @@
 [submodule "git-scrum"]
 	path = git-scrum
 	url = https://github.com/topicusonderwijs/git-scrum
+[submodule "git-number"]
+	path = git-number.submodule
+	url = https://github.com/holygeek/git-number.git
