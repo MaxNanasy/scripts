@@ -1,0 +1,38 @@
+#!/bin/bash -e
+
+# TODO Allow passing in merge strategy
+# TODO Optionally parse merge commit message for merge strategy
+## e.g. Merge-strategy: octopus
+## Issue: Merge strategies untracked
+### Counterexample: .gitattributes can be tracked, but invokes untracked behavior
+# TODO Maybe use (git merge) instead of (git read-tree -m)
+
+merge_commit="$(git rev-parse --verify "$1")"
+
+merge_parents_count="$(git log --format=%P "$merge_commit^!" | wc -w)"
+if [ "$merge_parents_count" -ne 2 ]
+then
+	echo "$merge_commit has $merge_parents_count parent(s), \
+but $0 requires the merge commit to have exactly two parents" >&2
+	exit 1
+fi
+
+merge_base="$(git merge-base "$merge_commit^1" "$merge_commit^2" || echo 4b825dc642cb6eb9a060e54bf8d69288fbee4904)"
+
+temp_dir="$(mktemp -d)"
+trap 'rm -r "$temp_dir"' EXIT
+
+mkdir "$temp_dir/working-copy"
+export GIT_WORK_TREE="$temp_dir/working-copy"
+export GIT_INDEX_FILE="$temp_dir/index"
+
+git read-tree -m "$merge_base" "$merge_commit^1" "$merge_commit^2"
+
+git ls-files -uz | while IFS= read -r -d '' unmerged_file_line
+do
+	unmerged_file="${unmerged_file_line#* *$'\t'}"
+	git merge-index git-merge-one-file "$unmerged_file" >/dev/null 2>&1 || git add "$unmerged_file" 2>/dev/null || true
+done
+
+automerge_commit="$(git commit-tree "$(git write-tree)" < /dev/null)"
+git show "$(git log --format=%B "$merge_commit^!" | git commit-tree "$merge_commit^{tree}" -p "$automerge_commit")"
